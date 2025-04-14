@@ -1,0 +1,29 @@
+when_modified:
+  autoapply: true
+
+cost_estimation:
+  enabled: false
+
+hooks:
+  all:
+    pre:
+      - type: oidc
+        provider: aws
+        role_arn: "arn:aws:iam::026090549866:role/terrateam"
+
+terraform:
+  backend:
+    s3:
+      bucket: "terrateam-doppler"
+      key: "terraform.tfstate"
+      region: eu-west-1
+      encrypt: true
+
+workflows:
+  - tag_query: ""
+    plan:
+      - type: init
+      - type: plan
+    apply:
+      - type: init
+      - type: apply
